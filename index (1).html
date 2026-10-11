@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Circuito turístico del casco histórico de La Paz</title>
+<meta name="description" content="Circuito peatonal de seis paradas en el casco histórico de La Paz, de la Plaza San Francisco a la Calle Jaén.">
+<script>
+(function () {
+  var lang = "es";
+  try {
+    var saved = localStorage.getItem("circuito-lpz-idioma");
+    if (saved === "es" || saved === "en") { lang = saved; }
+    else if (navigator.language && navigator.language.toLowerCase().indexOf("es") !== 0) { lang = "en"; }
+  } catch (e) {}
+  document.documentElement.lang = lang;
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F2F5F8;
+  --surface: #FFFFFF;
+  --text: #162238;
+  --muted: #475672;
+  --line: #C5D0DD;
+  --accent: #B4185A;
+  --accent-ink: #FFFFFF;
+  --hero: #12203A;
+  --hero-text: #F4F7FB;
+  --hero-muted: #C3CFE2;
+  --peak: #3E5E92;
+  --snow: #EAF1F9;
+  --yellow: #F2B33D;
+  --teal: #2A9D8F;
+  --display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1626;
+    --surface: #16213A;
+    --text: #E8EEF7;
+    --muted: #A9B6CB;
+    --line: #2A3857;
+    --accent: #FF7FAE;
+    --accent-ink: #1A0A12;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1626;
+  --surface: #16213A;
+  --text: #E8EEF7;
+  --muted: #A9B6CB;
+  --line: #2A3857;
+  --accent: #FF7FAE;
+  --accent-ink: #1A0A12;
+}
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+  background: #12203A;
+}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html[lang="es"] .en { display: none !important; }
+html[lang="en"] .es { display: none !important; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  -webkit-text-size-adjust: 100%;
+}
+.wrap { max-width: 40rem; margin: 0 auto; padding: 0 1.25rem; }
+h1, h2, h3 { font-family: var(--display); font-weight: 800; }
+:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+[tabindex="-1"]:focus { outline: none; }
+
+/* Barra superior e idioma */
+.topbar { display: flex; justify-content: flex-end; padding-top: 0.9rem; }
+.lang { display: inline-flex; border: 1px solid var(--hero-muted); border-radius: 999px; overflow: hidden; }
+.lang button {
+  min-width: 48px;
+  min-height: 44px;
+  padding: 0 0.9rem;
+  border: 0;
+  background: transparent;
+  color: var(--hero-text);
+  font: 600 0.95rem var(--body);
+  cursor: pointer;
+}
+.lang button[aria-pressed="true"] { background: var(--hero-text); color: var(--hero); }
+.lang button:focus-visible { outline-color: var(--yellow); outline-offset: -3px; }
+
+/* Portada */
+.hero { background: var(--hero); color: var(--hero-text); }
+.hero .wrap { padding-bottom: 0.25rem; }
+.hero h1 {
+  font-size: clamp(2.2rem, 10vw, 3.3rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 1.25rem 0 1rem;
+  max-width: 14ch;
+}
+.hero p { margin: 0 0 1rem; max-width: 30rem; color: var(--hero-muted); }
+.hero .facts { margin: 0 0 1.5rem; color: var(--hero-text); font-weight: 600; }
+.skyline { display: block; width: 100%; height: auto; }
+.band { display: flex; height: 6px; }
+.band span { flex: 1; }
+.band .b1 { background: var(--accent); }
+.band .b2 { background: var(--yellow); }
+.band .b3 { background: var(--teal); }
+
+.note {
+  margin: 1.5rem 0 0;
+  padding: 0.9rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 0.975rem;
+}
+.note strong { color: var(--text); font-weight: 600; }
+
+.section-title { font-size: 1.5rem; line-height: 1.15; letter-spacing: -0.01em; margin: 2.25rem 0 0.5rem; }
+.caption { margin: 0 0 1rem; color: var(--muted); font-size: 0.95rem; max-width: 34rem; }
+
+/* Mapa */
+.mapbox { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 0.5rem; }
+.mapbox svg { display: block; width: 100%; height: auto; }
+.m-grid { stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 5; fill: none; }
+.m-route { stroke: var(--accent); stroke-width: 4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.m-pin circle { fill: var(--accent); stroke: var(--surface); stroke-width: 3; }
+.m-pin text.n { fill: var(--accent-ink); font: 800 15px var(--display); text-anchor: middle; dominant-baseline: central; }
+.m-pin:focus-visible circle { stroke: var(--text); }
+.m-label { fill: var(--text); font: 600 13px var(--body); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
+.m-tag { fill: var(--muted); font: 600 11px var(--body); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+  font-size: 0.975rem;
+  text-decoration: none;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; color: var(--text); border: 2px solid var(--line); }
+.mapbtn { margin-top: 1rem; }
+
+/* Lista de paradas */
+.stops { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+.stopcard {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  column-gap: 1rem;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
+  text-decoration: none;
+}
+.stopcard:hover { border-color: var(--accent); }
+.thumb { position: relative; display: block; width: 88px; height: 88px; }
+.thumb img { display: block; width: 88px; height: 88px; object-fit: cover; border-radius: 10px; background: var(--line); }
+.badge {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: 2px solid var(--surface);
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+.stopcard h3 { margin: 0 0 0.25rem; font-size: 1.15rem; line-height: 1.2; }
+.stopcard p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+/* Fichas */
+.back { display: inline-flex; align-items: center; min-height: 44px; margin-top: 1rem; color: var(--hero-text); font-weight: 600; text-decoration: none; }
+.back:hover { text-decoration: underline; }
+.ficha-hero { background: var(--hero); color: var(--hero-text); }
+.ficha-hero .wrap { padding-bottom: 1.75rem; }
+.ficha-hero .step { margin: 0.5rem 0 0.5rem; color: var(--yellow); font-weight: 600; font-size: 0.95rem; }
+.ficha-hero h1 { font-size: clamp(2rem, 9vw, 2.8rem); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 0.75rem; }
+.ficha-hero p { margin: 0; color: var(--hero-muted); max-width: 32rem; }
+.ficha-body { padding-top: 0.5rem; padding-bottom: 1rem; }
+.ficha-body h2 { font-size: 1.35rem; line-height: 1.2; margin: 1.75rem 0 0.4rem; }
+.ficha-body p { margin: 0 0 0.5rem; max-width: 34rem; }
+.ficha-body h3 { font-size: 1.1rem; line-height: 1.25; margin: 1.1rem 0 0.3rem; }
+.lead { font-size: 1.1rem; }
+.gallery { display: grid; gap: 0.5rem; margin: 1.25rem 0 0; }
+.gallery figure { margin: 0; }
+.gallery img { display: block; width: 100%; height: auto; border-radius: 12px; background: var(--line); }
+.g-stack { grid-template-columns: 1fr; }
+.g-pair { grid-template-columns: 1fr 1fr; }
+.g-pair img { aspect-ratio: 3 / 4; object-fit: cover; }
+.g-trio { grid-template-columns: 1fr 1fr; }
+.g-trio figure:first-child { grid-column: 1 / -1; }
+.g-trio figure:not(:first-child) img { aspect-ratio: 4 / 3; object-fit: cover; }
+.actions { margin: 1.75rem 0 0; }
+.pager { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 2rem 0 0; padding-bottom: 2.5rem; }
+
+footer { background: var(--hero); color: var(--hero-muted); font-size: 0.9rem; margin-top: 3rem; }
+footer .wrap { padding-top: 1.5rem; padding-bottom: 1.75rem; }
+footer p { margin: 0; max-width: 32rem; }
+
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<!-- ============ PORTADA ============ -->
+<div data-view="home" data-title-es="Circuito turístico del casco histórico de La Paz" data-title-en="La Paz Historic Center walking route">
+  <header class="hero">
+    <div class="wrap">
+      <div class="topbar">
+        <div class="lang" role="group" aria-label="Idioma / Language">
+          <button type="button" data-lang="es" aria-pressed="true">ES</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+      <h1 tabindex="-1" data-focus>
+        <span class="es">Circuito turístico del casco histórico de La Paz</span>
+        <span class="en">La Paz Historic Center walking route</span>
+      </h1>
+      <p>
+        <span class="es">Seis paradas a pie, de la Plaza San Francisco a la Calle Jaén. Elige una parada o recorre el circuito en orden.</span>
+        <span class="en">Six stops on foot, from Plaza San Francisco to Calle Jaén. Pick a stop or follow the route in order.</span>
+      </p>
+      <p class="facts">
+        <span class="es">1,8 km · unos 60 minutos · 6 paradas</span>
+        <span class="en">1.8 km · about 60 minutes · 6 stops</span>
+      </p>
+    </div>
+    <svg class="skyline" viewBox="0 0 400 160" role="img" aria-label="Ilustración del nevado Illimani sobre las casas de La Paz" preserveAspectRatio="xMidYMax meet">
+      <path fill="var(--peak)" d="M0 160 L0 118 L48 96 L92 112 L140 66 L170 82 L205 24 L238 62 L262 44 L304 100 L346 84 L400 112 L400 160 Z"/>
+      <g fill="var(--snow)">
+        <polygon points="205,24 188,52 197,47 206,58 216,47 229,52"/>
+        <polygon points="140,66 125,80 133,77 141,86 150,77 163,80"/>
+        <polygon points="262,44 249,58 256,55 263,63 270,56 273,58"/>
+      </g>
+      <g>
+        <rect x="0" y="138" width="34" height="22" fill="#C8654A"/>
+        <rect x="33" y="130" width="34" height="30" fill="#A94A33"/>
+        <rect x="66" y="142" width="34" height="18" fill="#C8654A"/>
+        <rect x="99" y="126" width="34" height="34" fill="#A94A33"/>
+        <rect x="132" y="134" width="34" height="26" fill="#C8654A"/>
+        <rect x="165" y="144" width="34" height="16" fill="#A94A33"/>
+        <rect x="198" y="128" width="34" height="32" fill="#C8654A"/>
+        <rect x="231" y="136" width="34" height="24" fill="#A94A33"/>
+        <rect x="264" y="124" width="34" height="36" fill="#C8654A"/>
+        <rect x="297" y="140" width="34" height="20" fill="#A94A33"/>
+        <rect x="330" y="132" width="34" height="28" fill="#C8654A"/>
+        <rect x="363" y="142" width="37" height="18" fill="#A94A33"/>
+      </g>
+    </svg>
+    <div class="band" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
+  </header>
+
+  <main class="wrap">
+    <p class="note">
+      <span class="es"><strong>La Paz está a más de 3.500 metros de altura.</strong> Camina despacio, toma agua y ten en cuenta que hay cuestas empinadas.</span>
+      <span class="en"><strong>La Paz sits above 3,500 meters.</strong> Walk slowly, drink water, and expect some steep streets.</span>
+    </p>
+
+    <h2 class="section-title">
+      <span class="es">Mapa del circuito</span>
+      <span class="en">Route map</span>
+    </h2>
+    <p class="caption">
+      <span class="es">Esquema del recorrido: muestra el orden de las paradas, no las distancias. Toca una parada para ver su ficha.</span>
+      <span class="en">Route diagram: it shows the order of the stops, not distances. Tap a stop to read its page.</span>
+    </p>
+    <div class="mapbox">
+      <svg viewBox="0 0 360 430" role="group" aria-label="Esquema del circuito con seis paradas">
+        <path class="m-grid" d="M0 80 L360 40 M0 170 L360 120 M0 260 L360 210 M0 350 L360 300 M60 0 L20 430 M150 0 L120 430 M240 0 L220 430 M330 0 L320 430"/>
+        <polyline class="m-route" points="56,382 120,312 210,264 280,192 200,122 110,58"/>
+
+        <a class="m-pin" href="#san-francisco" aria-label="Parada 1: Plaza y Basílica de San Francisco">
+          <circle cx="56" cy="382" r="18"/><text class="n" x="56" y="382">1</text>
+        </a>
+        <text class="m-label" x="82" y="378">San Francisco</text>
+        <text class="m-tag es" x="82" y="396">Inicio</text>
+        <text class="m-tag en" x="82" y="396">Start</text>
+
+        <a class="m-pin" href="#sagarnaga" aria-label="Parada 2: Calle Sagárnaga">
+          <circle cx="120" cy="312" r="18"/><text class="n" x="120" y="312">2</text>
+        </a>
+        <text class="m-label" x="146" y="308">Sagárnaga</text>
+
+        <a class="m-pin" href="#murillo" aria-label="Parada 3: Calle Murillo">
+          <circle cx="210" cy="264" r="18"/><text class="n" x="210" y="264">3</text>
+        </a>
+        <text class="m-label" x="236" y="290">Calle Murillo</text>
+
+        <a class="m-pin" href="#plaza-murillo" aria-label="Parada 4: Plaza Murillo">
+          <circle cx="280" cy="192" r="18"/><text class="n" x="280" y="192">4</text>
+        </a>
+        <text class="m-label" x="254" y="226" text-anchor="middle">Plaza Murillo</text>
+
+        <a class="m-pin" href="#comercio" aria-label="Parada 5: Calle Comercio">
+          <circle cx="200" cy="122" r="18"/><text class="n" x="200" y="122">5</text>
+        </a>
+        <text class="m-label" x="174" y="126" text-anchor="end">Calle Comercio</text>
+
+        <a class="m-pin" href="#jaen" aria-label="Parada 6: Calle Jaén">
+          <circle cx="110" cy="58" r="18"/><text class="n" x="110" y="58">6</text>
+        </a>
+        <text class="m-label" x="136" y="54">Calle Jaén</text>
+        <text class="m-tag es" x="136" y="72">Fin</text>
+        <text class="m-tag en" x="136" y="72">End</text>
+      </svg>
+    </div>
+    <p class="mapbtn">
+      <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;origin=Plaza+San+Francisco+La+Paz+Bolivia&amp;destination=Calle+Jaen+La+Paz+Bolivia&amp;waypoints=Calle+Sagarnaga+La+Paz+Bolivia%7CCalle+Murillo+La+Paz+Bolivia%7CPlaza+Murillo+La+Paz+Bolivia%7CCalle+Comercio+La+Paz+Bolivia&amp;travelmode=walking">
+        <span class="es">Abrir el recorrido en Google Maps</span>
+        <span class="en">Open the route in Google Maps</span>
+      </a>
+    </p>
+
+    <h2 class="section-title">
+      <span class="es">Las seis paradas</span>
+      <span class="en">The six stops</span>
+    </h2>
+    <ol class="stops">
+      <li>
+        <a class="stopcard" href="#san-francisco">
+          <span class="thumb"><img src="thumb-san-francisco.jpg" alt="" width="88" height="88" loading="lazy" decoding="async"><span class="badge" aria-hidden="true">1</span></span>
+          <div class="stoptext">
+            <h3><span class="es">Plaza y Basílica de San Francisco</span><span class="en">Plaza and Basilica of San Francisco</span></h3>
+            <p><span class="es">Una basílica de barroco mestizo y la gran plaza donde empieza el recorrido.</span><span class="en">A mestizo baroque basilica and the large plaza where the route begins.</span></p>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a class="stopcard" href="#sagarnaga">
+          <span class="thumb"><img src="thumb-sagarnaga.jpg" alt="" width="88" height="88" loading="lazy" decoding="async"><span class="badge" aria-hidden="true">2</span></span>
+          <div class="stoptext">
+            <h3>Calle Sagárnaga</h3>
+            <p><span class="es">La calle de los textiles y la artesanía, a pasos del Mercado de las Brujas.</span><span class="en">The street of textiles and crafts, steps from the Witches' Market.</span></p>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a class="stopcard" href="#murillo">
+          <span class="thumb"><img src="thumb-murillo.jpg" alt="" width="88" height="88" loading="lazy" decoding="async"><span class="badge" aria-hidden="true">3</span></span>
+          <div class="stoptext">
+            <h3>Calle Murillo</h3>
+            <p><span class="es">Una de las calles comerciales y gastronómicas más tradicionales del centro.</span><span class="en">One of the most traditional commercial and dining streets in the center.</span></p>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a class="stopcard" href="#plaza-murillo">
+          <span class="thumb"><img src="thumb-plaza-murillo.jpg" alt="" width="88" height="88" loading="lazy" decoding="async"><span class="badge" aria-hidden="true">4</span></span>
+          <div class="stoptext">
+            <h3>Plaza Murillo</h3>
+            <p><span class="es">El corazón político e histórico del país, rodeado por los poderes del Estado.</span><span class="en">The political and historical heart of the country, surrounded by the branches of the State.</span></p>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a class="stopcard" href="#comercio">
+          <span class="thumb"><img src="thumb-comercio.jpg" alt="" width="88" height="88" loading="lazy" decoding="async"><span class="badge" aria-hidden="true">5</span></span>
+          <div class="stoptext">
+            <h3>Calle Comercio</h3>
+            <p><span class="es">Una de las vías más transitadas y tradicionales del centro paceño.</span><span class="en">One of the busiest and most traditional streets in downtown La Paz.</span></p>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a class="stopcard" href="#jaen">
+          <span class="thumb"><img src="thumb-jaen.jpg" alt="" width="88" height="88" loading="lazy" decoding="async"><span class="badge" aria-hidden="true">6</span></span>
+          <div class="stoptext">
+            <h3>Calle Jaén</h3>
+            <p><span class="es">La calle colonial mejor conservada de La Paz, con museos en antiguas casonas.</span><span class="en">The best-preserved colonial street in La Paz, with museums in old mansions.</span></p>
+          </div>
+        </a>
+      </li>
+    </ol>
+  </main>
+</div>
+
+<!-- ============ FICHA 1 ============ -->
+<div data-view="san-francisco" data-title-es="Plaza y Basílica de San Francisco · Circuito La Paz" data-title-en="Plaza and Basilica of San Francisco · La Paz route" hidden>
+  <header class="ficha-hero">
+    <div class="wrap">
+      <div class="topbar"><div class="lang" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
+      <a class="back" href="#"><span class="es">← Volver al circuito</span><span class="en">← Back to the route</span></a>
+      <p class="step"><span class="es">Parada 1 de 6</span><span class="en">Stop 1 of 6</span></p>
+      <h1 tabindex="-1" data-focus><span class="es">Plaza y Basílica de San Francisco</span><span class="en">Plaza and Basilica of San Francisco</span></h1>
+      <p><span class="es">Una basílica de barroco mestizo y la gran plaza donde empieza el recorrido.</span><span class="en">A mestizo baroque basilica and the large plaza where the route begins.</span></p>
+    </div>
+  </header>
+  <main class="wrap ficha-body">
+    <div class="gallery g-trio">
+      <figure><img src="sf-1.jpg" alt="Vista de la Basílica de San Francisco desde la avenida" data-alt-es="Vista de la Basílica de San Francisco desde la avenida" data-alt-en="View of the Basilica of San Francisco from the avenue" width="800" height="530" loading="lazy" decoding="async"></figure>
+      <figure><img src="sf-2.jpg" alt="Fachada y torre de la Basílica de San Francisco" data-alt-es="Fachada y torre de la Basílica de San Francisco" data-alt-en="Façade and tower of the Basilica of San Francisco" width="547" height="365" loading="lazy" decoding="async"></figure>
+      <figure><img src="sf-3.jpg" alt="La plaza San Francisco vista desde arriba" data-alt-es="La plaza San Francisco vista desde arriba" data-alt-en="Plaza San Francisco seen from above" width="850" height="638" loading="lazy" decoding="async"></figure>
+    </div>
+    <h2><span class="es">Basílica Menor de San Francisco</span><span class="en">Minor Basilica of San Francisco</span></h2>
+    <p class="lead"><span class="es">Basílica Menor Nuestra Señora de los Ángeles (San Francisco) es una joya arquitectónica que destaca por su imponente fachada de piedra tallada y su profundo valor histórico y artístico.</span><span class="en">The Minor Basilica of Our Lady of the Angels (San Francisco) is an architectural jewel that stands out for its imposing carved-stone façade and its deep historical and artistic value.</span></p>
+    <h3><span class="es">Historia</span><span class="en">History</span></h3>
+    <p><span class="es">Su construcción inicial data del siglo XVI, aunque el templo actual fue levantado durante el siglo XVIII tras el colapso de la edificación anterior. Es un referente mundial del estilo barroco mestizo, en el que artesanos indígenas plasmaron elementos de su cosmovisión y símbolos de la flora andina en los relieves de la fachada y los altares.</span><span class="en">Its original construction dates from the 16th century, although the current church was built in the 18th century after the earlier building collapsed. It is a world reference for the mestizo baroque style, in which Indigenous artisans captured elements of their worldview and symbols of Andean flora in the reliefs of the façade and the altars.</span></p>
+    <h3><span class="es">Actividades</span><span class="en">Things to do</span></h3>
+    <p><span class="es">Puedes realizar un recorrido guiado por el interior para apreciar los retablos de madera bañados en pan de oro, visitar el museo de arte religioso y subir a las terrazas y torres del complejo para obtener una perspectiva panorámica excepcional de la ciudad.</span><span class="en">You can take a guided tour of the interior to admire the wooden altarpieces covered in gold leaf, visit the religious art museum, and climb the terraces and towers of the complex for an exceptional panoramic view of the city.</span></p>
+    <h2>Plaza Mayor de San Francisco</h2>
+    <p class="lead"><span class="es">Plaza Mayor de San Francisco es el gran espacio público abierto que se extiende a los pies de la basílica, consolidándose como el principal punto de encuentro urbano de La Paz.</span><span class="en">Plaza Mayor de San Francisco is the large open public space stretching out at the foot of the basilica, firmly established as the main urban meeting point in La Paz.</span></p>
+    <h3><span class="es">Historia</span><span class="en">History</span></h3>
+    <p><span class="es">Este sitio ha funcionado históricamente como el corazón cívico, social y cultural de la ciudad, sirviendo como escenario de ferias tradicionales, manifestaciones y celebraciones populares desde la época colonial hasta la actualidad.</span><span class="en">This site has historically served as the civic, social, and cultural heart of the city, hosting traditional fairs, demonstrations, and popular celebrations from colonial times to the present.</span></p>
+    <h3><span class="es">Actividades</span><span class="en">Things to do</span></h3>
+    <p><span class="es">Es perfecto para sentarse a observar el dinámico pulso de la ciudad, presenciar espectáculos de artistas urbanos, recorrer ferias temporales de artesanías y utilizarlo como el punto de partida ideal para explorar a pie la tradicional calle Sagárnaga o el centro histórico.</span><span class="en">It is perfect for sitting down to watch the lively pulse of the city, catching performances by street artists, browsing temporary crafts fairs, and using it as the ideal starting point for exploring the traditional Calle Sagárnaga or the historic center on foot.</span></p>
+    <p class="actions"><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Basilica+de+San+Francisco+La+Paz+Bolivia"><span class="es">Cómo llegar</span><span class="en">Get directions</span></a></p>
+    <nav class="pager" aria-label="Paradas">
+      <a class="btn ghost" href="#"><span class="es">Ver todo el circuito</span><span class="en">See the full route</span></a>
+      <a class="btn" href="#sagarnaga"><span class="es">Siguiente: Calle Sagárnaga →</span><span class="en">Next: Calle Sagárnaga →</span></a>
+    </nav>
+  </main>
+</div>
+
+<!-- ============ FICHA 2 ============ -->
+<div data-view="sagarnaga" data-title-es="Calle Sagárnaga · Circuito La Paz" data-title-en="Calle Sagárnaga · La Paz route" hidden>
+  <header class="ficha-hero">
+    <div class="wrap">
+      <div class="topbar"><div class="lang" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
+      <a class="back" href="#"><span class="es">← Volver al circuito</span><span class="en">← Back to the route</span></a>
+      <p class="step"><span class="es">Parada 2 de 6</span><span class="en">Stop 2 of 6</span></p>
+      <h1 tabindex="-1" data-focus>Calle Sagárnaga</h1>
+      <p><span class="es">La calle de los textiles y la artesanía, a pasos del Mercado de las Brujas.</span><span class="en">The street of textiles and crafts, steps from the Witches' Market.</span></p>
+    </div>
+  </header>
+  <main class="wrap ficha-body">
+    <div class="gallery g-pair">
+      <figure><img src="sagarnaga-1.jpg" alt="Calle Sagárnaga con tiendas de artesanías" data-alt-es="Calle Sagárnaga con tiendas de artesanías" data-alt-en="Calle Sagárnaga with craft shops" width="584" height="524" loading="lazy" decoding="async"></figure>
+      <figure><img src="sagarnaga-2.jpg" alt="Calle Sagárnaga decorada con paraguas de colores" data-alt-es="Calle Sagárnaga decorada con paraguas de colores" data-alt-en="Calle Sagárnaga decorated with colorful umbrellas" width="554" height="432" loading="lazy" decoding="async"></figure>
+    </div>
+    <p class="lead"><span class="es">Calle Sagárnaga es una de las arterias más emblemáticas, coloridas y transitadas del centro histórico de La Paz, conectando directamente con la zona de la Basílica de San Francisco.</span><span class="en">Calle Sagárnaga is one of the most emblematic, colorful, and busy streets in the historic center of La Paz, directly connecting with the area of the Basilica of San Francisco.</span></p>
+    <h2><span class="es">Historia</span><span class="en">History</span></h2>
+    <p><span class="es">La calle debe su nombre a Juan Bautista Sagárnaga, ilustre prócer y héroe de la Revolución de La Paz de 1809. Diseñada originalmente en la época colonial dentro del trazado en damero, funcionó como un punto clave de almacenamiento y comercio (tambos). Con los años se transformó en un crisol cultural que mantuvo su estructura empedrada tradicional y su rol como el centro neurálgico del turismo y la artesanía en la ciudad.</span><span class="en">The street is named after Juan Bautista Sagárnaga, a distinguished patriot and hero of the 1809 La Paz Revolution. Originally laid out in the colonial era within the grid plan, it served as a key point for storage and trade (tambos). Over the years it became a cultural melting pot that kept its traditional cobbled structure and its role as the nerve center of tourism and crafts in the city.</span></p>
+    <h2><span class="es">Actividades</span><span class="en">Things to do</span></h2>
+    <p><span class="es">Puedes explorar una gran variedad de tiendas dedicadas a la venta de textiles de lana de alpaca, chompas, ponchos y recuerdos artesanales hechos a mano. También es el punto ideal para adquirir joyería en plata, visitar comercios de artículos tradicionales y conectar a pocos pasos con el famoso Mercado de las Brujas, además de descansar en acogedoras cafeterías locales.</span><span class="en">You can explore a wide variety of shops selling alpaca wool textiles, sweaters, ponchos, and handmade crafts and souvenirs. It is also the ideal place to buy silver jewelry, visit shops selling traditional goods, and reach the famous Witches' Market within a few steps, as well as rest in welcoming local cafés.</span></p>
+    <p class="actions"><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Calle+Sagarnaga+La+Paz+Bolivia"><span class="es">Cómo llegar</span><span class="en">Get directions</span></a></p>
+    <nav class="pager" aria-label="Paradas">
+      <a class="btn ghost" href="#san-francisco"><span class="es">← Anterior</span><span class="en">← Previous</span></a>
+      <a class="btn ghost" href="#"><span class="es">Ver todo el circuito</span><span class="en">See the full route</span></a>
+      <a class="btn" href="#murillo"><span class="es">Siguiente: Calle Murillo →</span><span class="en">Next: Calle Murillo →</span></a>
+    </nav>
+  </main>
+</div>
+
+<!-- ============ FICHA 3 ============ -->
+<div data-view="murillo" data-title-es="Calle Murillo · Circuito La Paz" data-title-en="Calle Murillo · La Paz route" hidden>
+  <header class="ficha-hero">
+    <div class="wrap">
+      <div class="topbar"><div class="lang" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
+      <a class="back" href="#"><span class="es">← Volver al circuito</span><span class="en">← Back to the route</span></a>
+      <p class="step"><span class="es">Parada 3 de 6</span><span class="en">Stop 3 of 6</span></p>
+      <h1 tabindex="-1" data-focus>Calle Murillo</h1>
+      <p><span class="es">Una de las calles comerciales y gastronómicas más tradicionales del centro.</span><span class="en">One of the most traditional commercial and dining streets in the center.</span></p>
+    </div>
+  </header>
+  <main class="wrap ficha-body">
+    <div class="gallery g-stack">
+      <figure><img src="murillo-1.jpg" alt="Fachada con un mural colorido" data-alt-es="Fachada con un mural colorido" data-alt-en="Façade with a colorful mural" width="555" height="360" loading="lazy" decoding="async"></figure>
+    </div>
+    <p class="lead"><span class="es">Calle Murillo es una de las arterias viales y comerciales más tradicionales y concurridas del casco urbano central de La Paz, reconocida por su constante dinamismo y su particular fusión de comercio local y tradición urbana.</span><span class="en">Calle Murillo is one of the most traditional and busy road and commercial arteries of the central urban area of La Paz, known for its constant dynamism and its particular blend of local commerce and urban tradition.</span></p>
+    <h2><span class="es">Historia</span><span class="en">History</span></h2>
+    <p><span class="es">Esta vía posee una sólida raigambre histórica en el centro paceño, manteniendo tramos con el encanto de las antiguas calles empedradas y la atmósfera de los barrios tradicionales. Durante décadas ha funcionado como un punto clave de conexión y comercio barrial, atestiguando la evolución urbana de la ciudad desde la época colonial hasta la consolidación republicana.</span><span class="en">This street has deep historical roots in downtown La Paz, keeping stretches with the charm of the old cobbled streets and the atmosphere of traditional neighborhoods. For decades it has been a key point of connection and neighborhood trade, bearing witness to the city's urban evolution from the colonial era to the consolidation of the Republic.</span></p>
+    <h2><span class="es">Actividades</span><span class="en">Things to do</span></h2>
+    <p><span class="es">Es un lugar excelente para disfrutar de una caminata exploratoria y una variada oferta gastronómica, ya que en su recorrido se concentran desde acogedores restaurantes y pubs de comida criolla hasta propuestas culinarias internacionales. Además, sirve como un paso estratégico para conectar el circuito turístico con otras calles icónicas del centro.</span><span class="en">It is an excellent place for an exploratory walk and a varied food scene, as along its length you will find everything from cozy restaurants and pubs serving Creole food to international cuisine. It also serves as a strategic link between the tourist route and other iconic streets in the center.</span></p>
+    <p class="actions"><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Calle+Murillo+La+Paz+Bolivia"><span class="es">Cómo llegar</span><span class="en">Get directions</span></a></p>
+    <nav class="pager" aria-label="Paradas">
+      <a class="btn ghost" href="#sagarnaga"><span class="es">← Anterior</span><span class="en">← Previous</span></a>
+      <a class="btn ghost" href="#"><span class="es">Ver todo el circuito</span><span class="en">See the full route</span></a>
+      <a class="btn" href="#plaza-murillo"><span class="es">Siguiente: Plaza Murillo →</span><span class="en">Next: Plaza Murillo →</span></a>
+    </nav>
+  </main>
+</div>
+
+<!-- ============ FICHA 4 ============ -->
+<div data-view="plaza-murillo" data-title-es="Plaza Murillo · Circuito La Paz" data-title-en="Plaza Murillo · La Paz route" hidden>
+  <header class="ficha-hero">
+    <div class="wrap">
+      <div class="topbar"><div class="lang" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
+      <a class="back" href="#"><span class="es">← Volver al circuito</span><span class="en">← Back to the route</span></a>
+      <p class="step"><span class="es">Parada 4 de 6</span><span class="en">Stop 4 of 6</span></p>
+      <h1 tabindex="-1" data-focus>Plaza Murillo</h1>
+      <p><span class="es">El corazón político e histórico del país, rodeado por los poderes del Estado.</span><span class="en">The political and historical heart of the country, surrounded by the branches of the State.</span></p>
+    </div>
+  </header>
+  <main class="wrap ficha-body">
+    <div class="gallery g-stack">
+      <figure><img src="plaza-murillo-1.jpg" alt="Vista aérea de la Plaza Murillo y la Catedral" data-alt-es="Vista aérea de la Plaza Murillo y la Catedral" data-alt-en="Aerial view of Plaza Murillo and the Cathedral" width="960" height="720" loading="lazy" decoding="async"></figure>
+      <figure><img src="plaza-murillo-2.jpg" alt="Monumento y palomas en la Plaza Murillo" data-alt-es="Monumento y palomas en la Plaza Murillo" data-alt-en="Monument and pigeons in Plaza Murillo" width="588" height="441" loading="lazy" decoding="async"></figure>
+    </div>
+    <p class="lead"><span class="es">Plaza Metropolitana Pedro Domingo Murillo es el corazón político, histórico y cívico de Bolivia, rodeado por los edificios de los poderes del Estado y marcado por una constante actividad urbana.</span><span class="en">Plaza Metropolitana Pedro Domingo Murillo is the political, historical, and civic heart of Bolivia, surrounded by the buildings of the branches of the State and marked by constant urban activity.</span></p>
+    <h2><span class="es">Historia</span><span class="en">History</span></h2>
+    <p><span class="es">Nombrada en honor al protomártir de la independencia Pedro Domingo Murillo, esta plaza ha sido el epicentro de los acontecimientos políticos más trascendentales de la historia republicana del país. En su perímetro se encuentran edificaciones emblemáticas como el Palacio Quemado, la Asamblea Legislativa Plurinacional y la Catedral Metropolitana.</span><span class="en">Named in honor of Pedro Domingo Murillo, protomartyr of independence, this plaza has been the epicenter of the most significant political events in the country's republican history. Around its perimeter stand emblematic buildings such as the Palacio Quemado, the Plurinational Legislative Assembly, and the Metropolitan Cathedral.</span></p>
+    <h2><span class="es">Actividades</span><span class="en">Things to do</span></h2>
+    <p><span class="es">Es ideal para pasear, alimentar a las palomas, observar la guardia de honor frente al palacio presidencial, tomar fotografías de la arquitectura circundante y sentir el pulso institucional de la nación.</span><span class="en">It is ideal for strolling, feeding the pigeons, watching the honor guard in front of the presidential palace, taking photos of the surrounding architecture, and feeling the institutional pulse of the nation.</span></p>
+    <p class="actions"><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Plaza+Murillo+La+Paz+Bolivia"><span class="es">Cómo llegar</span><span class="en">Get directions</span></a></p>
+    <nav class="pager" aria-label="Paradas">
+      <a class="btn ghost" href="#murillo"><span class="es">← Anterior</span><span class="en">← Previous</span></a>
+      <a class="btn ghost" href="#"><span class="es">Ver todo el circuito</span><span class="en">See the full route</span></a>
+      <a class="btn" href="#comercio"><span class="es">Siguiente: Calle Comercio →</span><span class="en">Next: Calle Comercio →</span></a>
+    </nav>
+  </main>
+</div>
+
+<!-- ============ FICHA 5 ============ -->
+<div data-view="comercio" data-title-es="Calle Comercio · Circuito La Paz" data-title-en="Calle Comercio · La Paz route" hidden>
+  <header class="ficha-hero">
+    <div class="wrap">
+      <div class="topbar"><div class="lang" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
+      <a class="back" href="#"><span class="es">← Volver al circuito</span><span class="en">← Back to the route</span></a>
+      <p class="step"><span class="es">Parada 5 de 6</span><span class="en">Stop 5 of 6</span></p>
+      <h1 tabindex="-1" data-focus>Calle Comercio</h1>
+      <p><span class="es">Una de las vías más transitadas y tradicionales del centro paceño.</span><span class="en">One of the busiest and most traditional streets in downtown La Paz.</span></p>
+    </div>
+  </header>
+  <main class="wrap ficha-body">
+    <div class="gallery g-stack">
+      <figure><img src="comercio-1.jpg" alt="Una calle del centro de La Paz iluminada de noche" data-alt-es="Una calle del centro de La Paz iluminada de noche" data-alt-en="A downtown La Paz street lit up at night" width="546" height="366" loading="lazy" decoding="async"></figure>
+      <figure><img src="comercio-2.jpg" alt="Fotografía antigua de una calle del centro con un tranvía" data-alt-es="Fotografía antigua de una calle del centro con un tranvía" data-alt-en="Old photograph of a downtown street with a tram" width="588" height="396" loading="lazy" decoding="async"></figure>
+    </div>
+    <p class="lead"><span class="es">Calle Comercio es una de las vías más transitadas y tradicionales del centro paceño, combinando el movimiento comercial cotidiano con un marcado valor histórico.</span><span class="en">Calle Comercio is one of the busiest and most traditional streets in downtown La Paz, combining everyday commercial activity with strong historical value.</span></p>
+    <h2><span class="es">Historia</span><span class="en">History</span></h2>
+    <p><span class="es">Desde la época colonial y durante la consolidación de la República, esta calle funcionó como uno de los ejes mercantiles más importantes de la ciudad, donde se establecieron los primeros comercios formales, almacenes y librerías que abastecían a la ciudadanía.</span><span class="en">From the colonial era and through the consolidation of the Republic, this street served as one of the city's most important mercantile axes, home to the first formal shops, warehouses, and bookstores that supplied its citizens.</span></p>
+    <h2><span class="es">Actividades</span><span class="en">Things to do</span></h2>
+    <p><span class="es">Perfecta para recorrer tiendas, librerías tradicionales y pequeños negocios locales, además de observar la arquitectura de antiguos edificios comerciales que aún conservan detalles de antaño mientras caminas hacia la zona norte del casco histórico.</span><span class="en">Perfect for visiting shops, traditional bookstores, and small local businesses, and for admiring the architecture of old commercial buildings that still keep details from the past as you walk toward the northern part of the historic center.</span></p>
+    <p class="actions"><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Calle+Comercio+La+Paz+Bolivia"><span class="es">Cómo llegar</span><span class="en">Get directions</span></a></p>
+    <nav class="pager" aria-label="Paradas">
+      <a class="btn ghost" href="#plaza-murillo"><span class="es">← Anterior</span><span class="en">← Previous</span></a>
+      <a class="btn ghost" href="#"><span class="es">Ver todo el circuito</span><span class="en">See the full route</span></a>
+      <a class="btn" href="#jaen"><span class="es">Siguiente: Calle Jaén →</span><span class="en">Next: Calle Jaén →</span></a>
+    </nav>
+  </main>
+</div>
+
+<!-- ============ FICHA 6 ============ -->
+<div data-view="jaen" data-title-es="Calle Jaén · Circuito La Paz" data-title-en="Calle Jaén · La Paz route" hidden>
+  <header class="ficha-hero">
+    <div class="wrap">
+      <div class="topbar"><div class="lang" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
+      <a class="back" href="#"><span class="es">← Volver al circuito</span><span class="en">← Back to the route</span></a>
+      <p class="step"><span class="es">Parada 6 de 6</span><span class="en">Stop 6 of 6</span></p>
+      <h1 tabindex="-1" data-focus>Calle Jaén</h1>
+      <p><span class="es">La calle colonial mejor conservada de La Paz, con museos en antiguas casonas.</span><span class="en">The best-preserved colonial street in La Paz, with museums in old mansions.</span></p>
+    </div>
+  </header>
+  <main class="wrap ficha-body">
+    <div class="gallery g-pair">
+      <figure><img src="jaen-1.jpg" alt="Calle Jaén con casonas de colores" data-alt-es="Calle Jaén con casonas de colores" data-alt-en="Calle Jaén with colorful mansions" width="365" height="547" loading="lazy" decoding="async"></figure>
+      <figure><img src="jaen-2.jpg" alt="Calle Jaén con faroles y balcones" data-alt-es="Calle Jaén con faroles y balcones" data-alt-en="Calle Jaén with street lamps and balconies" width="495" height="619" loading="lazy" decoding="async"></figure>
+    </div>
+    <p class="lead"><span class="es">Jaén es la calle colonial mejor conservada de La Paz, famosa por su atmósfera detenida en el tiempo, sus casonas de fachadas coloridas y sus callejones empedrados.</span><span class="en">Jaén is the best-preserved colonial street in La Paz, famous for its atmosphere frozen in time, its mansions with colorful façades, and its cobbled alleys.</span></p>
+    <h2><span class="es">Historia</span><span class="en">History</span></h2>
+    <p><span class="es">Conserva la traza urbana original del siglo XVIII y alberga numerosas leyendas populares de la época colonial y republicana. Es célebre por haber sido el escenario de conspiraciones independentistas y por albergar importantes centros culturales y museos históricos.</span><span class="en">It preserves the original 18th-century urban layout and is home to numerous popular legends from the colonial and republican eras. It is famous for having been the setting of independence conspiracies and for hosting important cultural centers and historical museums.</span></p>
+    <h2><span class="es">Actividades</span><span class="en">Things to do</span></h2>
+    <p><span class="es">Puedes recorrer sus estrechas aceras de piedra, visitar la Casa Museo de Pedro Domingo Murillo y los museos municipales contiguos (como el Museo de Metales Preciosos o el Museo Costumbrista), y disfrutar de espacios culturales y cafeterías ubicados en las antiguas casonas.</span><span class="en">You can stroll its narrow stone sidewalks, visit the Casa Museo de Pedro Domingo Murillo and the neighboring municipal museums (such as the Museum of Precious Metals or the Costumbrista Museum), and enjoy cultural venues and cafés set in the old mansions.</span></p>
+    <p class="actions"><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=Calle+Jaen+La+Paz+Bolivia"><span class="es">Cómo llegar</span><span class="en">Get directions</span></a></p>
+    <nav class="pager" aria-label="Paradas">
+      <a class="btn ghost" href="#comercio"><span class="es">← Anterior</span><span class="en">← Previous</span></a>
+      <a class="btn" href="#"><span class="es">Terminar y volver al circuito</span><span class="en">Finish and return to the route</span></a>
+    </nav>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>
+      <span class="es">Circuito turístico peatonal autoguiado · Casco histórico de La Paz. Información de referencia: confirma horarios y accesos antes de ir.</span>
+      <span class="en">Self-guided walking route · Historic center of La Paz. Reference information: check opening hours and access before you go.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var views = Array.prototype.slice.call(document.querySelectorAll("[data-view]"));
+
+  function currentLang() { return document.documentElement.lang === "en" ? "en" : "es"; }
+
+  function applyTitle(view) {
+    document.title = view.getAttribute("data-title-" + currentLang()) || document.title;
+  }
+
+  function route() {
+    var id = (location.hash || "").replace("#", "");
+    var target = null;
+    views.forEach(function (v) { if (v.getAttribute("data-view") === id) { target = v; } });
+    if (!target) { target = views[0]; }
+    views.forEach(function (v) { v.hidden = (v !== target); });
+    applyTitle(target);
+    window.scrollTo(0, 0);
+    var h = target.querySelector("[data-focus]");
+    if (h) { try { h.focus({ preventScroll: true }); } catch (e) {} }
+  }
+
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    try { localStorage.setItem("circuito-lpz-idioma", lang); } catch (e) {}
+    Array.prototype.forEach.call(document.querySelectorAll("[data-lang]"), function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-lang") === lang ? "true" : "false");
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("img[data-alt-es]"), function (img) {
+      img.alt = img.getAttribute("data-alt-" + lang);
+    });
+    views.forEach(function (v) { if (!v.hidden) { applyTitle(v); } });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll("[data-lang]"), function (b) {
+    b.addEventListener("click", function () { setLang(b.getAttribute("data-lang")); });
+  });
+
+  window.addEventListener("hashchange", route);
+  setLang(currentLang());
+  route();
+})();
+</script>
+</body>
+</html>
